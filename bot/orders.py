@@ -30,7 +30,6 @@ class OrderManager:
         self.grid_orders = {}
     
     def place_market_order(self, symbol: str, side: str, quantity: float) -> OrderResult:
-        """Place a market order"""
         try:
             logger.info(f"Placing {side} market order: {quantity} {symbol}")
             
@@ -82,7 +81,6 @@ class OrderManager:
             )
     
     def place_limit_order(self, symbol: str, side: str, quantity: float, price: float) -> OrderResult:
-        """Place a limit order"""
         try:
             logger.info(f"Placing {side} limit order: {quantity} {symbol} at {price}")
             
@@ -137,7 +135,6 @@ class OrderManager:
     
     def place_stop_limit_order(self, symbol: str, side: str, quantity: float, 
                              stop_price: float, limit_price: float) -> OrderResult:
-        """Place a stop-limit order"""
         try:
             logger.info(f"Placing {side} stop-limit order: {quantity} {symbol} stop: {stop_price} limit: {limit_price}")
             
@@ -179,7 +176,6 @@ class OrderManager:
     
     def place_oco_order(self, symbol: str, side: str, quantity: float, 
                        price: float, stop_price: float, stop_limit_price: float) -> OrderResult:
-        """Place an OCO (One-Cancels-Other) order"""
         try:
             logger.info(f"Placing {side} OCO order: {quantity} {symbol}")
             
@@ -213,7 +209,6 @@ class OrderManager:
     
     def start_twap_order(self, symbol: str, side: str, total_quantity: float, 
                         duration_minutes: int, interval_seconds: int = 60) -> str:
-        """Start a TWAP (Time-Weighted Average Price) order"""
         twap_id = f"twap_{symbol}_{int(time.time())}"
         
         self.twap_orders[twap_id] = {
@@ -234,7 +229,6 @@ class OrderManager:
         return twap_id
     
     def _execute_twap(self, twap_id: str):
-        """Execute TWAP order logic"""
         twap_order = self.twap_orders[twap_id]
         
         total_intervals = (twap_order['duration_minutes'] * 60) // twap_order['interval_seconds']
@@ -267,7 +261,6 @@ class OrderManager:
     
     def start_grid_strategy(self, symbol: str, lower_price: float, upper_price: float, 
                           grid_levels: int, quantity_per_level: float) -> str:
-        """Start a grid trading strategy"""
         grid_id = f"grid_{symbol}_{int(time.time())}"
         
         price_step = (upper_price - lower_price) / (grid_levels - 1)
@@ -302,7 +295,6 @@ class OrderManager:
         return grid_id
     
     def _place_grid_orders(self, grid_id: str):
-        """Place grid orders at specified levels"""
         grid_order = self.grid_orders[grid_id]
         
         for price in grid_order['buy_levels']:
